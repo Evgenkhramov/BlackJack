@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewLayer.Interfaces;
+using ViewLayer.Constants;
+
 
 namespace ViewLayer
 {
-    class DateFromGamer
+   public class DateFromGamer
     {
         private IOutput _output;
         private IInput _input;
@@ -46,7 +49,5 @@ namespace ViewLayer
 
             return rate;
         }
-
-
     }
 }

@@ -2,16 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
+using BusinessLogic.Enums;
+
 
 namespace BusinessLogic
 {
     public class PrepareGamersList
     {
-        public List<Gamer> GenerateBotList(List<Gamer> allGamers, int howManyBots)
+        //private string _botName { get; set; }
+        //public PrepareGamersList(string botName)
+        //{
+        //    _botName = botName;
+        //}
+
+        public List<Gamer> GenerateBotList(List<Gamer> allGamers, int howManyBots, string _botName)
         {
             for (int i = 0; i < howManyBots; i++)
             {
-                allGamers.Add(new Gamer() { Name = TextCuts.BotName + i, Rate = Settings.BotRate, Status = GamerStatus.Plays, Role = GamerRole.Bot });
+                allGamers.Add(new Gamer() { Name = _botName + i, Rate = Settings.BotRate, Status = GamerStatus.Plays, Role = GamerRole.Bot });
             }
 
             return allGamers;

@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
+using BusinessLogic;
+using BusinessLogic.Enums;
+using ViewLayer.Constants;
 
-namespace BusinessLogic
+
+
+namespace ViewLayer
 {
     public class Game
     {
@@ -17,7 +22,7 @@ namespace BusinessLogic
             GameProcess gameProcess = DoGame(prepare);
             CheckResult(gameProcess);
         }
-
+        
         //return model
         private GameInfoModel GetGameInfo()
         {
@@ -45,12 +50,16 @@ namespace BusinessLogic
 
             List<Gamer> gamersList = new List<Gamer>();
             PrepareGamersList botGamers = new PrepareGamersList();
-            List<Gamer> allGamers = botGamers.GenerateBotList(gamersList, gameInfo.HowManyBots);
+            List<Gamer> allGamers = botGamers.GenerateBotList(gamersList, gameInfo.HowManyBots, TextCuts.BotName);
             allGamers = botGamers.AddPlayer(allGamers, gameInfo.UserName, gameInfo.UserRate, GamerRole.Gamer, GamerStatus.Plays);
             allGamers = botGamers.AddPlayer(allGamers, TextCuts.DealerName, Settings.DealerRate, GamerRole.Dealer, GamerStatus.Plays);
 
-            var cardDeck = PrepareCardDeck.DoOneDeck();
-            PrepareGameDesk prepareGame = new PrepareGameDesk(consoleOut);
+            var cardDeck = PrepareCardDeck.DoOneDeck();        
+            PrepareGameDesk prepareGame = new PrepareGameDesk();
+            var deskOut = new GameDeskOut();
+            deskOut.OutputGameDesk(prepareGame, consoleOut);
+
+            
             List<Gamer> gamerList = prepareGame.DistributionCards(allGamers, cardDeck);
 
             var gameDeskModel = new GameDeskModel();

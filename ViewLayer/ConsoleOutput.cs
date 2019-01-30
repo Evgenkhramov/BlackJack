@@ -3,26 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewLayer.Interfeces;
+using ViewLayer.Interfaces;
+using ViewLayer.Constants;
+using BusinessLogic.Models;
+using BusinessLogic.Enums;
+
 
 namespace ViewLayer
 {
-    public class PrintOutput : IPrint
-    {
-        public void PrintHistory(List<CardHistory> history)
-        {
-            foreach (CardHistory element in history)
-            {
-                Console.WriteLine($"Name: {element.GamerName} have: {element.GamerPoints} Points  and card: { element.CardOfRound.CardNumber} {element.CardOfRound.CardSuit}");
-            }
-        }
-    }
-
     public class ConsoleOutput : IOutput
     {
-        public void ShowFinishResult(List<Gamer> gamerList)
+        public void ShowFinishResult(List<Gamer> gamerlist)
         {
-            foreach (Gamer player in gamerList)
+            foreach (Gamer player in gamerlist)
             {
                 Console.WriteLine(TextCuts.ShowFinishResultByConsole,
                    player.Name, player.Points, player.Status, player.WinCash);
@@ -49,9 +42,10 @@ namespace ViewLayer
             Console.WriteLine(text, number1, number2);
         }
 
-        public void ShowSomeOutput(Enums.GamerStatus text)
+        public void ShowSomeOutput(GamerStatus text)
         {
             Console.WriteLine(text);
         }
+
     }
 }

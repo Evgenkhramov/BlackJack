@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Models;
+using BusinessLogic.Enums;
 
-namespace ViewLayer.Interfeces
+namespace ViewLayer.Interfaces
 {
     public interface IOutput
     {
@@ -13,6 +15,6 @@ namespace ViewLayer.Interfeces
         void ShowSomeOutput(string text);
         void ShowSomeOutput(string text, int number);
         void ShowSomeOutput(string text, int number1, int number2);
-        void ShowSomeOutput(Enums.GamerStatus text);
+        void ShowSomeOutput(GamerStatus text);
     }
 }

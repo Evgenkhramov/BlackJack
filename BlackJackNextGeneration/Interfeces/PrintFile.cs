@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewLayer.Interfeces
+namespace BlackJackNextGeneration.Interfeces
 {
-    public interface IInput
+    public interface IPrintFile
     {
-        string InputString();
-
-        int InputInt(int min, int max);
+        void PrintHistory(List<CardHistory> history);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewLayer.Interfeces
+namespace ViewLayer.Interfaces
 {
     public interface IInput
     {

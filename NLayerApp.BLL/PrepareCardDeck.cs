@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BusinessLogic.Models;
+using BusinessLogic.Dictionary;
 
 namespace BusinessLogic
 {
@@ -11,7 +13,7 @@ namespace BusinessLogic
             var cards = new List<OneCard>(52);
             foreach (var suitName in Enum.GetNames(typeof(Enums.Suit)))
             {
-                foreach (KeyValuePair<string, int> keyValue in CardPointDiction.CardPointDict)
+                foreach (KeyValuePair<string, int> keyValue in DictionaryOfCardPoints.CardPointDict)
                 {
                     cards.Add(new OneCard
                     {

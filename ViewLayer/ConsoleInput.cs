@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewLayer.Interfeces;
+using ViewLayer.Interfaces;
 
 namespace ViewLayer
 {
@@ -20,6 +20,5 @@ namespace ViewLayer
             int validNumber = intCheck.CheckNumber(min, max);
             return validNumber;
         }
-
     }
 }
