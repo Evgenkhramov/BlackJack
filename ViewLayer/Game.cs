@@ -5,19 +5,17 @@ using BusinessLogic.Models;
 using BusinessLogic;
 using ViewLayer.Constants;
 
-
-
 namespace ViewLayer
 {
     public class Game
     {
         readonly Settings game;
-        GameDeskModel prepare;
+         
         public Game()
         {
             game = new Settings();
             GameInfoModel date = GetGameInfo();
-            prepare = PrepareGame(date);
+            GameDeskModel prepare = PrepareGame(date);
             GameProcess gameProcess = DoGame(prepare);
             CheckResult(gameProcess);
         }
@@ -28,7 +26,8 @@ namespace ViewLayer
             var consoleOut = new ConsoleOutput();
             var consoleInp = new ConsoleInput();
 
-            var someGameGetDate = new DateFromGamer(consoleOut, consoleInp);
+            var someGameGetDate = new DataFromGamer(consoleOut, consoleInp);
+
             someGameGetDate.ShowStart();
             string userName = someGameGetDate.GetUserName();
             int howManyBots = someGameGetDate.GetNumberOfBots();

@@ -10,11 +10,11 @@ using BusinessLogic;
 
 namespace ViewLayer
 {
-    public class DateFromGamer
+    public class DataFromGamer
     {
         private IOutput _output;
         private IInput _input;
-        public DateFromGamer(IOutput output, IInput input)
+        public DataFromGamer(IOutput output, IInput input)
         {
             _output = output;
             _input = input;
