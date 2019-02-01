@@ -8,6 +8,8 @@ namespace BusinessLogic
     {
         public static int BotRate { get; private set; }
         public static string BotName{ get; private set; }
+        public static string DealerName{ get; private set; }
+
 
         public static int DealerRate { get; private set; }
         public static int BlackJeckPoints { get; private set; }
@@ -18,6 +20,9 @@ namespace BusinessLogic
         public static int MinBots { get; private set; }
         public static int HowManyCardsInFirstRound { get; private set; }
 
+        public static string YesAnswer { get; private set; }
+        public static string NoAnswer { get; private set; }
+
         public static string HistoryDirectoryPath { get; private set; }
         public static string HistoryDirectorySubPath { get; private set; }
         public static string HistoryFileName { get; private set; }
@@ -27,6 +32,7 @@ namespace BusinessLogic
             BotRate = 10;
             BotName = "Bot Gamer";
             DealerRate = 0;
+            DealerName = "Dealer";
             BlackJeckPoints = 21;
             MinimumCasinoPointsLevel = 17;
             MaxRateForGamer = 50;
@@ -34,6 +40,8 @@ namespace BusinessLogic
             MaxBots = 6;
             MinBots = 0;
             HowManyCardsInFirstRound = 2;
+            YesAnswer = "y";
+            NoAnswer = "n";
 
             HistoryDirectoryPath = @"C:\BlackJeck";
             HistoryDirectorySubPath = @"history";

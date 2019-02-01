@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewLayer.Interfaces;
 using ViewLayer.Constants;
+using BusinessLogic;
 
 
 namespace ViewLayer
 {
-   public class DateFromGamer
+    public class DateFromGamer
     {
         private IOutput _output;
         private IInput _input;

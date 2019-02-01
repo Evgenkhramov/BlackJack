@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using DataAccesLayer.Models;
 
 namespace DataAccesLayer
 {
@@ -8,22 +10,23 @@ namespace DataAccesLayer
     {
         public void WriteHistoryStringToFile(string fullFileName, List<CardHistory> historyList)
         {
+            //try
+            //{
+            //    const string V = @"C:\blackjack\text.txt";
 
-            try
-            {
-                StreamWriter strimWrite = new StreamWriter(fullFileName);
-                foreach (CardHistory element in historyList)
-                {
-                    strimWrite.WriteLine($"{element.GamerName} get card {element.CardOfRound.CardNumber} {element.CardOfRound.CardSuit}  and get {element.GamerPoints}");
+            //    StreamWriter streamWriter = new StreamWriter(V);
+            //    foreach (CardHistory element in historyList)
+            //    {
+            //        streamWriter.WriteLine($"{element.GamerName} get card {element.CardOfRound.CardNumber} {element.CardOfRound.CardSuit}  and get {element.GamerPoints}");
 
-                }
-                strimWrite.Close();
+            //    }
+            //    streamWriter.Close();
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: " + e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("Exception: " + e.Message);
+            //}
         }
     }
 }

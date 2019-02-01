@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLogic.Enums
+namespace DataAccesLayer.Enums
 {
     public enum Suit
     {

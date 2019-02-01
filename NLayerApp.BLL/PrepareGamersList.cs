@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using BusinessLogic.Models;
-using BusinessLogic.Enums;
+using DataAccesLayer.Models;
+using DataAccesLayer.Enums;
+
 
 
 namespace BusinessLogic

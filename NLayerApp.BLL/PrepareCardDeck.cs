@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using BusinessLogic.Models;
+using DataAccesLayer.Models;
+using DataAccesLayer.Enums;
 using BusinessLogic.Dictionary;
 
 namespace BusinessLogic
@@ -11,7 +12,7 @@ namespace BusinessLogic
         public static List<OneCard> DoOneDeck()
         {
             var cards = new List<OneCard>(52);
-            foreach (var suitName in Enum.GetNames(typeof(Enums.Suit)))
+            foreach (var suitName in Enum.GetNames(typeof(Suit)))
             {
                 foreach (KeyValuePair<string, int> keyValue in DictionaryOfCardPoints.CardPointDict)
                 {

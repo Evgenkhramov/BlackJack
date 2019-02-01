@@ -5,19 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewLayer.Constants;
 using BusinessLogic.Models;
+using ViewModels;
 
 namespace ViewLayer
 {
     public class GameDeskOut
     {
-        public void OutputGameDesk(List<Gamer> gamerList, ConsoleOutput consoleOut)
+        public void OutputGameDesk(List<GamerView> gamerList, ConsoleOutput consoleOut)
         {
             consoleOut.ShowSomeOutput(TextCuts.NewCards);
-            foreach (Gamer gamer in gamerList)
+
+            foreach (GamerView gamer in gamerList)
             {
                consoleOut.ShowSomeOutput(gamer.Name);
-                consoleOut.ShowResult(SomeCard.CardNumber, SomeCard.CardSuit, gamer.Points);
+                foreach (CardView card in gamer.PlayersCardView)
+                {
+                    consoleOut.ShowResult(card.CardNumber, card.CardSuit, gamer.Points);
+                }               
             }
+
             consoleOut.ShowSomeOutput(TextCuts.CardsOnTable);
         }
     }

@@ -7,6 +7,8 @@ namespace ViewLayer
 {
     public class NumberValidation
     {
+        
+
         private ConsoleOutput output = new ConsoleOutput();
         public int CheckNumber(int min, int max)
         {

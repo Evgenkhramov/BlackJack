@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DataAccesLayer.Abstract;
 
-namespace BusinessLogic.Models
+namespace DataAccesLayer.Models
 {
-    public class OneCard
+    public class OneCard:OneCardAbstr
     {
         public string CardSuit { get; set; }
         public string CardNumber { get; set; }

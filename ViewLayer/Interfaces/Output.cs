@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models;
-using BusinessLogic.Enums;
+using ViewModels;
 
 namespace ViewLayer.Interfaces
 {
     public interface IOutput
     {
-        void ShowFinishResult(List<Gamer> gamerList);
+        void ShowFinishResult(List<GamerView> gamerList);
         void ShowResult(string number, string suit, int points);
         void ShowSomeOutput(string text);
         void ShowSomeOutput(string text, int number);

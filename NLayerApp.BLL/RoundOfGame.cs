@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BusinessLogic.Models;
+using BusinessLogic.Enums;
 
 namespace BusinessLogic
 {
     public class RoundOfGame
     {
-        private ConsoleOutput output = new ConsoleOutput();
-        private static ConsoleInput input = new ConsoleInput();
-
-
-        public void DoRoundForGamer(Gamer someGamer, List<OneCard> newSomeDeck)
+        public void DoRoundForGamer(Gamer someGamer, List<OneCard> newSomeDeck, string gamerAnswer)
         {
             var oneRound = new DistributionOfPlayingCards();
             if (someGamer.Role == GamerRole.Dealer && someGamer.Points < Settings.MinimumCasinoPointsLevel)
@@ -25,19 +23,15 @@ namespace BusinessLogic
 
             if (someGamer.Role == GamerRole.Gamer && someGamer.Status != GamerStatus.Enough)
             {
-                output.ShowSomeOutput(TextCuts.NowYouHave + someGamer.Points);
-                output.ShowSomeOutput(TextCuts.DoYouWantCard);
 
-                string answer = input.InputString();
-                if (answer == TextCuts.Yes)
+                if (gamerAnswer == Settings.YesAnswer)
                 {
                     oneRound.DoRound(someGamer, newSomeDeck);
                     DoGamerStatus(someGamer);
                 }
-                if (answer != TextCuts.Yes)
+                if (gamerAnswer != Settings.YesAnswer)
                 {
                     someGamer.Status = GamerStatus.Enough;
-                    output.ShowSomeOutput(someGamer.Status);
                 }
             }
             if (someGamer.Role == GamerRole.Bot && someGamer.Status != GamerStatus.Enough)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
+using BusinessLogic.Enums;
 
 namespace BusinessLogic
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
 using BusinessLogic;
-using BusinessLogic.Enums;
 using ViewLayer.Constants;
 
 
@@ -13,16 +12,16 @@ namespace ViewLayer
     public class Game
     {
         readonly Settings game;
-
+        GameDeskModel prepare;
         public Game()
         {
             game = new Settings();
             GameInfoModel date = GetGameInfo();
-            GameDeskModel prepare = PrepareGame(date);
+            prepare = PrepareGame(date);
             GameProcess gameProcess = DoGame(prepare);
             CheckResult(gameProcess);
         }
-        
+
         //return model
         private GameInfoModel GetGameInfo()
         {
@@ -33,6 +32,7 @@ namespace ViewLayer
             someGameGetDate.ShowStart();
             string userName = someGameGetDate.GetUserName();
             int howManyBots = someGameGetDate.GetNumberOfBots();
+            
 
             var gameInfo = new GameInfoModel
             {
@@ -47,38 +47,40 @@ namespace ViewLayer
         private GameDeskModel PrepareGame(GameInfoModel gameInfo)
         {
             var consoleOut = new ConsoleOutput();
+            var prepareAllGame = new PrepareAllGame();
+            prepareAllGame.PreparedGame(gameInfo.UserName, gameInfo.UserRate, gameInfo.HowManyBots);          
 
-            List<Gamer> gamersList = new List<Gamer>();
-            PrepareGamersList botGamers = new PrepareGamersList();
-            List<Gamer> allGamers = botGamers.GenerateBotList(gamersList, gameInfo.HowManyBots, TextCuts.BotName);
-            allGamers = botGamers.AddPlayer(allGamers, gameInfo.UserName, gameInfo.UserRate, GamerRole.Gamer, GamerStatus.Plays);
-            allGamers = botGamers.AddPlayer(allGamers, TextCuts.DealerName, Settings.DealerRate, GamerRole.Dealer, GamerStatus.Plays);
-
-            var cardDeck = PrepareCardDeck.DoOneDeck();        
-            PrepareGameDesk prepareGame = new PrepareGameDesk();
             var deskOut = new GameDeskOut();
-            deskOut.OutputGameDesk(prepareGame, consoleOut);
+            deskOut.OutputGameDesk(preparedGamerList, consoleOut);
 
-            
-            List<Gamer> gamerList = prepareGame.DistributionCards(allGamers, cardDeck);
-
-            var gameDeskModel = new GameDeskModel();
-            gameDeskModel.gamerListAfterPrepare = gamerList;
-            gameDeskModel.cardDeck = cardDeck;
+            var gameDeskModel = new GameDeskModel
+            {
+                gamerListAfterPrepare = preparedGamerList,
+                cardDeck = cardDeck
+            };
 
             return gameDeskModel;
         }
 
         private GameProcess DoGame(GameDeskModel gameDeskModel)
         {
+            var consoleOut = new ConsoleOutput();
+            var consoleInp = new ConsoleInput();
 
-            RoundOfGame makeGame = new RoundOfGame();
+            var makeGame = new RoundOfGame();
 
             foreach (Gamer player in gameDeskModel.gamerListAfterPrepare)
             {
                 while (player.Status == GamerStatus.Plays)
                 {
-                    makeGame.DoRoundForGamer(player, gameDeskModel.cardDeck);
+                    string answer = BusinessLogic.Settings.NoAnswer;
+                    if (player.Role == GamerRole.Gamer)
+                    {
+                        consoleOut.ShowSomeOutput(TextCuts.NowYouHave + player.Points);
+                        consoleOut.ShowSomeOutput(TextCuts.DoYouWantCard);
+                        answer = consoleInp.InputString();
+                    }
+                    makeGame.DoRoundForGamer(player, gameDeskModel.cardDeck, answer);
                 }
             }
             var gameProcessResult = new GameProcess
@@ -93,19 +95,19 @@ namespace ViewLayer
         {
             var gameResult = new GameResult();
             var consoleOut = new ConsoleOutput();
-            var printOut = new PrintOutput();
+
             var consoleInp = new ConsoleInput();
-            var createDirectory = new DirectoryAndFileOfHistory();
-            var displayGameResult = new DisplayGameResults(consoleOut, printOut);
+            //var createDirectory = new DirectoryAndFileOfHistory();
+            var displayGameResult = new DisplayGameResults(consoleOut);
 
             gameResult.GetFinishResult(result.afterGameArray);
 
-            string fullName = createDirectory.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
-            string fullFileName = createDirectory.CreateFile(Settings.HistoryFileName, fullName);
-            HelperTextFileHistory textFile = new HelperTextFileHistory();
-            textFile.WriteHistoryStringToFile(fullFileName, GameHistoryList.History);
+            //string fullName = createDirectory.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
+            //string fullFileName = createDirectory.CreateFile(Settings.HistoryFileName, fullName);
+            //HelperTextFileHistory textFile = new HelperTextFileHistory();
+            //textFile.WriteHistoryStringToFile(fullFileName, GameHistoryList.History);
 
-            displayGameResult.FinishResult(result.afterGameArray, GameHistoryList.History);
+            displayGameResult.FinishResult(result.afterGameArray);
 
             //input.InputString();
         }
