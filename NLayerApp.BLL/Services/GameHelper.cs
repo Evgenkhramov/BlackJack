@@ -54,16 +54,15 @@ namespace BusinessLogic.Services
 
         public GamerView GamerFromViewList(List<GamerView> gamerViewList)
         {
-
+            var gamer = new GamerView();
             foreach (GamerView player in gamerViewList)
             {
                 if (player.Role == GamerViewRole.Gamer)
                 {
-                    return player;
+                   gamer = player;
                 }
             }
-
-                
+            return gamer;               
         }
 
         public GameProcess DoGame(GameDeskModel gameDeskModel)

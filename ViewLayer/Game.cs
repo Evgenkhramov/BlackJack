@@ -43,7 +43,9 @@ namespace ViewLayer
             GameDeskModel PreparedGameModel =  OneGame.PrepareGame(GameInfo);
             var GetGamerViewList = OneGame.GetGamerViewList(PreparedGameModel);
 
+            Output.ShowSomeOutput(TextCuts.CardsOnTable);
             Output.ShowFinishResult(GetGamerViewList);//промежуточный результат после двух карт всех игроков
+            
             Output.ShowResult
 
             //OneGame.DoGame(PreparedGame);
