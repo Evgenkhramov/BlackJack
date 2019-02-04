@@ -7,6 +7,7 @@ using BusinessLogic.Services;
 using ViewLayer.Constants;
 
 
+
 namespace ViewLayer
 {
     public class Game
@@ -38,9 +39,14 @@ namespace ViewLayer
                 UserRate = Rate,
                 HowManyBots = HowManyBots
             };
+            
+            GameDeskModel PreparedGameModel =  OneGame.PrepareGame(GameInfo);
+            var GetGamerViewList = OneGame.GetGamerViewList(PreparedGameModel);
 
-            var PreparedGame = OneGame.PrepareGame(GameInfo);
-            OneGame.DoGame(PreparedGame);
+            Output.ShowFinishResult(GetGamerViewList);//промежуточный результат после двух карт всех игроков
+            Output.ShowResult
+
+            //OneGame.DoGame(PreparedGame);
          
         
         }

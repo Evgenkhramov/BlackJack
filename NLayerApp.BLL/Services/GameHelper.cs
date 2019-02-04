@@ -7,14 +7,18 @@ using DataAccesLayer.Models;
 using DataAccesLayer.Enums;
 using ViewModels.Enums;
 using ViewModels;
+using BusinessLogic.Mappers;
+
 
 namespace BusinessLogic.Services
 {
     public class GameHelper
     {
+
+
         readonly Settings GameSettings;
-         //return model
-        
+        //return model
+
         public GameDeskModel PrepareGame(GameInfoModel gameInfo)
         {
             List<Gamer> gamersList = new List<Gamer>();
@@ -36,9 +40,35 @@ namespace BusinessLogic.Services
             return gameDeskModel;
         }
 
-        public  GameProcess DoGame(GameDeskModel gameDeskModel)
+        public List<GamerView> GetGamerViewList(GameDeskModel gameDeskModel)
         {
-           var makeGame = new RoundOfGame();
+            var GameMapper = new Mapper();
+            var gamerViewList = new List<GamerView>();
+            var makeGame = new RoundOfGame();
+            foreach (Gamer gamer in gameDeskModel.gamerListAfterPrepare)
+            {
+                gamerViewList.Add(GameMapper.Mapping(gamer));
+            }
+            return gamerViewList;
+        }
+
+        public GamerView GamerFromViewList(List<GamerView> gamerViewList)
+        {
+
+            foreach (GamerView player in gamerViewList)
+            {
+                if (player.Role == GamerViewRole.Gamer)
+                {
+                    return player;
+                }
+            }
+
+                
+        }
+
+        public GameProcess DoGame(GameDeskModel gameDeskModel)
+        {
+           
 
             foreach (Gamer player in gameDeskModel.gamerListAfterPrepare)
             {
