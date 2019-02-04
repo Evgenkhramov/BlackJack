@@ -5,17 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewLayer.Interfaces;
 using ViewLayer.Constants;
-using BusinessLogic.Models;
-using BusinessLogic.Enums;
+using ViewModels;
+using ViewModels.Enums;
+
+
 
 
 namespace ViewLayer
 {
     public class ConsoleOutput : IOutput
     {
-        public void ShowFinishResult(List<Gamer> gamerlist)
+        public void ShowFinishResult(List<GamerView> gamerlist)
         {
-            foreach (Gamer player in gamerlist)
+            foreach (GamerView player in gamerlist)
             {
                 Console.WriteLine(TextCuts.ShowFinishResultByConsole,
                    player.Name, player.Points, player.Status, player.WinCash);
@@ -42,7 +44,7 @@ namespace ViewLayer
             Console.WriteLine(text, number1, number2);
         }
 
-        public void ShowSomeOutput(GamerStatus text)
+        public void ShowSomeOutput(GamerViewStatus text)
         {
             Console.WriteLine(text);
         }

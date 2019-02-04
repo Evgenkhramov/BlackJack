@@ -3,112 +3,46 @@ using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
 using BusinessLogic;
+using BusinessLogic.Services;
 using ViewLayer.Constants;
+
 
 namespace ViewLayer
 {
     public class Game
     {
-        readonly Settings game;
+        ConsoleOutput Output = new ConsoleOutput();
+        ConsoleInput Input = new ConsoleInput();
+        readonly Settings GameSettings = new Settings();
+
+
+        public void DoGame()
+        {
+            Output.ShowSomeOutput(TextCuts.StartGame);
+            Output.ShowSomeOutput(TextCuts.EnterName);
+            string UserName = Input.InputString();
+
+            Output.ShowSomeOutput(TextCuts.HowManyBots, Settings.MaxBots);
+            int HowManyBots = Input.InputInt(Settings.MinBots, Settings.MaxBots);
+
+            Output.ShowSomeOutput(TextCuts.EnterValidRate, Settings.MinRateForGamer, Settings.MaxRateForGamer);
+
+            int Rate = Input.InputInt(Settings.MinRateForGamer, Settings.MaxRateForGamer);
+
+            Output.ShowSomeOutput(TextCuts.ShowStartRaund);
+
+            GameHelper OneGame = new GameHelper();
+            var GameInfo = new GameInfoModel
+            {
+                UserName = UserName,
+                UserRate = Rate,
+                HowManyBots = HowManyBots
+            };
+
+            var PreparedGame = OneGame.PrepareGame(GameInfo);
+            OneGame.DoGame(PreparedGame);
          
-        public Game()
-        {
-            game = new Settings();
-            GameInfoModel date = GetGameInfo();
-            GameDeskModel prepare = PrepareGame(date);
-            GameProcess gameProcess = DoGame(prepare);
-            CheckResult(gameProcess);
-        }
-
-        //return model
-        private GameInfoModel GetGameInfo()
-        {
-            var consoleOut = new ConsoleOutput();
-            var consoleInp = new ConsoleInput();
-
-            var someGameGetDate = new DataFromGamer(consoleOut, consoleInp);
-
-            someGameGetDate.ShowStart();
-            string userName = someGameGetDate.GetUserName();
-            int howManyBots = someGameGetDate.GetNumberOfBots();
-            
-
-            var gameInfo = new GameInfoModel
-            {
-                HowManyBots = howManyBots,
-                UserName = userName,
-                UserRate = someGameGetDate.GetGamerRate()
-            };
-
-            return gameInfo;
-        }
-
-        private GameDeskModel PrepareGame(GameInfoModel gameInfo)
-        {
-            var consoleOut = new ConsoleOutput();
-            var prepareAllGame = new PrepareAllGame();
-            prepareAllGame.PreparedGame(gameInfo.UserName, gameInfo.UserRate, gameInfo.HowManyBots);          
-
-            var deskOut = new GameDeskOut();
-            deskOut.OutputGameDesk(preparedGamerList, consoleOut);
-
-            var gameDeskModel = new GameDeskModel
-            {
-                gamerListAfterPrepare = preparedGamerList,
-                cardDeck = cardDeck
-            };
-
-            return gameDeskModel;
-        }
-
-        private GameProcess DoGame(GameDeskModel gameDeskModel)
-        {
-            var consoleOut = new ConsoleOutput();
-            var consoleInp = new ConsoleInput();
-
-            var makeGame = new RoundOfGame();
-
-            foreach (Gamer player in gameDeskModel.gamerListAfterPrepare)
-            {
-                while (player.Status == GamerStatus.Plays)
-                {
-                    string answer = BusinessLogic.Settings.NoAnswer;
-                    if (player.Role == GamerRole.Gamer)
-                    {
-                        consoleOut.ShowSomeOutput(TextCuts.NowYouHave + player.Points);
-                        consoleOut.ShowSomeOutput(TextCuts.DoYouWantCard);
-                        answer = consoleInp.InputString();
-                    }
-                    makeGame.DoRoundForGamer(player, gameDeskModel.cardDeck, answer);
-                }
-            }
-            var gameProcessResult = new GameProcess
-            {
-                afterGameArray = gameDeskModel.gamerListAfterPrepare
-            };
-
-            return gameProcessResult;
-        }
-
-        private void CheckResult(GameProcess result)
-        {
-            var gameResult = new GameResult();
-            var consoleOut = new ConsoleOutput();
-
-            var consoleInp = new ConsoleInput();
-            //var createDirectory = new DirectoryAndFileOfHistory();
-            var displayGameResult = new DisplayGameResults(consoleOut);
-
-            gameResult.GetFinishResult(result.afterGameArray);
-
-            //string fullName = createDirectory.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
-            //string fullFileName = createDirectory.CreateFile(Settings.HistoryFileName, fullName);
-            //HelperTextFileHistory textFile = new HelperTextFileHistory();
-            //textFile.WriteHistoryStringToFile(fullFileName, GameHistoryList.History);
-
-            displayGameResult.FinishResult(result.afterGameArray);
-
-            //input.InputString();
+        
         }
     }
 }

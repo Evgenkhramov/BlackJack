@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ViewModels.Enums;
 
 namespace ViewModels
 {
@@ -10,5 +11,6 @@ namespace ViewModels
         public int Points { get; set; }
         public int WinCash { get; set; }
         public List<CardView> PlayersCardView;
+        public GamerViewStatus Status { get; set; }
     }
 }

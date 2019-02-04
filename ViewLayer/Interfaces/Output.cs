@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Models;
 using ViewModels;
+using ViewModels.Enums;
 
 namespace ViewLayer.Interfaces
 {
@@ -15,6 +16,6 @@ namespace ViewLayer.Interfaces
         void ShowSomeOutput(string text);
         void ShowSomeOutput(string text, int number);
         void ShowSomeOutput(string text, int number1, int number2);
-        void ShowSomeOutput(GamerStatus text);
+        void ShowSomeOutput(GamerViewStatus text);
     }
 }

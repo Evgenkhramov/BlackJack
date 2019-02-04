@@ -23,12 +23,7 @@ namespace BusinessLogic
             var cardDeck = PrepareCardDeck.DoOneDeck();
             var prepareGame = new PrepareGameDesk();
             List<Gamer> preparedGamerList = prepareGame.DistributionCards(allGamers, cardDeck);
-            List<GamerView> outputGamerList = new List<GamerView>();
-            
+            List<GamerView> outputGamerList = new List<GamerView>();          
         }
-
-
-
-
     }
 }

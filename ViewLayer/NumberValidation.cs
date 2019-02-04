@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using ViewLayer.Constants;
 
-namespace ViewLayer
+namespace BusinessLogic
 {
     public class NumberValidation
     {
         
 
         private ConsoleOutput output = new ConsoleOutput();
-        public int CheckNumber(int min, int max)
+        public int CheckNumber(int min, int max, string enterValidNumber, string notValidNumber)
         {
             int number = 0;
             int validNumber = 0;
@@ -28,12 +28,12 @@ namespace ViewLayer
                     }
                     if (!success || number < min || number > max)
                     {
-                        output.ShowSomeOutput(TextCuts.EnterValidNumber, min, max);
+                        output.ShowSomeOutput(enterValidNumber, min, max);
                     }
                 }
                 catch
                 {
-                    Console.WriteLine(TextCuts.NotValidNumber);
+                    Console.WriteLine(notValidNumber);
                 }
             }
             return validNumber;
