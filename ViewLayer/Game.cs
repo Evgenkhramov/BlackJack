@@ -5,6 +5,8 @@ using BusinessLogic.Models;
 using BusinessLogic;
 using BusinessLogic.Services;
 using ViewLayer.Constants;
+using ViewModels;
+using ViewModels.Enums;
 
 
 
@@ -40,17 +42,29 @@ namespace ViewLayer
                 HowManyBots = HowManyBots
             };
             
-            GameDeskModel PreparedGameModel =  OneGame.PrepareGame(GameInfo);
-            var GetGamerViewList = OneGame.GetGamerViewList(PreparedGameModel);
-
-            Output.ShowSomeOutput(TextCuts.CardsOnTable);
-            Output.ShowFinishResult(GetGamerViewList);//промежуточный результат после двух карт всех игроков
+            GamerView  Gamer =  OneGame.PrepareGame(GameInfo);
             
-            Output.ShowResult
+                                  
+            bool Answer = true;
+            string GamerAnswer;
+            while(Answer)
+            {
+                Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
+                Output.ShowSomeOutput(TextCuts.DoYouWantCard);
+                GamerAnswer = Input.InputString();
+                if (GamerAnswer == Settings.YesAnswer && Gamer.Status!= GamerViewStatus.Enough)
+                {
+                    
 
-            //OneGame.DoGame(PreparedGame);
-         
-        
+                }
+                if (GamerAnswer != Settings.YesAnswer && Gamer.Status == GamerViewStatus.Enough)
+                {
+                    Answer = false;
+                }
+
+            }
+            
+            //OneGame.DoGame(PreparedGame);      
         }
     }
 }

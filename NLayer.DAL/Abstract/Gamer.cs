@@ -6,7 +6,6 @@ using DataAccesLayer.Models;
 
 namespace DataAccesLayer.Abstract
 {
-
     public abstract class GamerAbstr
     {
         string Name { get; set; }

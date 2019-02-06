@@ -8,6 +8,8 @@ using DataAccesLayer.Enums;
 using ViewModels.Enums;
 using ViewModels;
 using BusinessLogic.Mappers;
+using BusinessLogic.Dictionary;
+
 
 
 namespace BusinessLogic.Services
@@ -15,41 +17,54 @@ namespace BusinessLogic.Services
     public class GameHelper
     {
 
-
-        readonly Settings GameSettings;
-        //return model
-
-        public GameDeskModel PrepareGame(GameInfoModel gameInfo)
+        public GamerView PrepareGame(GameInfoModel gameInfo)
         {
             List<Gamer> gamersList = new List<Gamer>();
-            PrepareGamersList botGamers = new PrepareGamersList();
-
-            List<Gamer> allGamers = botGamers.GenerateBotList(gamersList, gameInfo.HowManyBots, Settings.BotName);
-            allGamers = botGamers.AddPlayer(allGamers, gameInfo.UserName, gameInfo.UserRate, GamerRole.Gamer, GamerStatus.Plays);
-            allGamers = botGamers.AddPlayer(allGamers, Settings.DealerName, Settings.DealerRate, GamerRole.Dealer, GamerStatus.Plays);
+            List<Gamer> allGamers = GenerateBotList(gamersList, gameInfo.HowManyBots, Settings.BotName);
+            allGamers = AddPlayer(allGamers, gameInfo.UserName, gameInfo.UserRate, GamerRole.Gamer, GamerStatus.Plays);
+            allGamers = AddPlayer(allGamers, Settings.DealerName, Settings.DealerRate, GamerRole.Dealer, GamerStatus.Plays);
 
             var cardDeck = PrepareCardDeck.DoOneDeck();
-            var prepareGame = new PrepareGameDesk();
-            List<Gamer> preparedGamerList = prepareGame.DistributionCards(allGamers, cardDeck);
-            List<GamerView> outputGamerList = new List<GamerView>();
-            var gameDeskModel = new GameDeskModel
-            {
-                gamerListAfterPrepare = preparedGamerList,
-                cardDeck = cardDeck
-            };
-            return gameDeskModel;
+
+            List<Gamer> PreparedGamerList = DoFirstRound(allGamers, cardDeck, Settings.HowManyCardsInFirstRound);
+            List<GamerView> outputGamerViewList = GetGamerViewList(PreparedGamerList);
+
+            GamerView Gamer = GamerFromViewList(outputGamerViewList);
+
+            return Gamer;
+        }
+        public GamerView GiveCardToThePlayer()
+        {
+            
+            return GamerView
         }
 
-        public List<GamerView> GetGamerViewList(GameDeskModel gameDeskModel)
+        public List<Gamer> GenerateBotList(List<Gamer> allGamers, int howManyBots, string botName)
         {
-            var GameMapper = new Mapper();
-            var gamerViewList = new List<GamerView>();
-            var makeGame = new RoundOfGame();
-            foreach (Gamer gamer in gameDeskModel.gamerListAfterPrepare)
+            for (int i = 0; i < howManyBots; i++)
             {
-                gamerViewList.Add(GameMapper.Mapping(gamer));
+                allGamers.Add(new Gamer() { Name = botName + i, Rate = Settings.BotRate, Status = GamerStatus.Plays, Role = GamerRole.Bot });
             }
-            return gamerViewList;
+
+            return allGamers;
+        }
+
+        public List<Gamer> AddPlayer(List<Gamer> allGamers, string name, int rate, GamerRole role, GamerStatus status)
+        {
+            allGamers.Add(new Gamer() { Name = name, Rate = rate, Status = status, Role = role });
+            return allGamers;
+        }
+
+
+        public List<GamerView> GetGamerViewList(List<Gamer> gamerList)
+        {
+            Mapper mapper = new Mapper();
+            List<GamerView> outputGamerList = new List<GamerView>();
+            foreach (Gamer player in gamerList)
+            {
+                outputGamerList.Add(mapper.Mapping(player));
+            }
+            return outputGamerList;
         }
 
         public GamerView GamerFromViewList(List<GamerView> gamerViewList)
@@ -59,57 +74,94 @@ namespace BusinessLogic.Services
             {
                 if (player.Role == GamerViewRole.Gamer)
                 {
-                   gamer = player;
+                    gamer = player;
                 }
             }
-            return gamer;               
+            return gamer;
         }
 
-        public GameProcess DoGame(GameDeskModel gameDeskModel)
+        public List<Gamer> DoFirstRound(List<Gamer> gamerList, List<OneCard> cardDeck, int howCards)
         {
-           
-
-            foreach (Gamer player in gameDeskModel.gamerListAfterPrepare)
+            for (int i = 0; i < howCards; i++)
             {
-                while (player.Status == GamerStatus.Plays)
+                foreach (Gamer gamer in gamerList)
                 {
-                    string answer = BusinessLogic.Settings.NoAnswer;
-                    if (player.Role == GamerRole.Gamer)
-                    {
-                        consoleOut.ShowSomeOutput(TextCuts.NowYouHave + player.Points);
-                        consoleOut.ShowSomeOutput(TextCuts.DoYouWantCard);
-                        answer = consoleInp.InputString();
-                    }
-                    makeGame.DoRoundForGamer(player, gameDeskModel.cardDeck, answer);
+                    OneCard SomeCard = PrepareCardDeck.GetSomeCard(cardDeck);
+                    gamer.PlayersCard.Add(SomeCard);
+                    int cardPoints = DictionaryOfCardPoints.CardPointDict[SomeCard.CardNumber];
+                    gamer.Points += cardPoints;
                 }
             }
-            var gameProcessResult = new GameProcess
-            {
-                afterGameArray = gameDeskModel.gamerListAfterPrepare
-            };
-
-            return gameProcessResult;
+            return gamerList;
         }
 
-        private void CheckResult(GameProcess result)
+        public void DoRoundForGamer(Gamer gamer, List<OneCard> someDeck)
         {
-            var gameResult = new GameResult();
-            var consoleOut = new ConsoleOutput();
+            OneCard SomeCard = PrepareCardDeck.GetSomeCard(someDeck);
+            gamer.PlayersCard.Add(SomeCard);
+            int cardPoints = DictionaryOfCardPoints.CardPointDict[SomeCard.CardNumber];
+            gamer.Points += cardPoints;
 
-            var consoleInp = new ConsoleInput();
-            //var createDirectory = new DirectoryAndFileOfHistory();
-            var displayGameResult = new DisplayGameResults(consoleOut);
+            //GameHistoryListHelper.AddGameHistory(GameHistoryListHelper.History, gamer, SomeCard);
 
-            gameResult.GetFinishResult(result.afterGameArray);
-
-            //string fullName = createDirectory.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
-            //string fullFileName = createDirectory.CreateFile(Settings.HistoryFileName, fullName);
-            //HelperTextFileHistory textFile = new HelperTextFileHistory();
-            //textFile.WriteHistoryStringToFile(fullFileName, GameHistoryList.History);
-
-            displayGameResult.FinishResult(result.afterGameArray);
-
-            //input.InputString();
         }
+        public void DoRound(Gamer gamer, List<OneCard> newSomeDeck)
+        {
+            OneCard SomeCard = PrepareCardDeck.GetSomeCard(newSomeDeck);
+            int cardPoints = DictionaryOfCardPoints.CardPointDict[SomeCard.CardNumber];
+            gamer.Points += cardPoints;
+            gamer.PlayersCard.Add(SomeCard);
+
+            //GameHistoryList.AddGameHistory(GameHistoryList.History, gamer, SomeCard);
+
+        }
+
+       
+        //public GameProcess DoGame(GameDeskModel gameDeskModel)
+        //{
+
+
+        //    foreach (Gamer player in gameDeskModel.gamerListAfterPrepare)
+        //    {
+        //        while (player.Status == GamerStatus.Plays)
+        //        {
+        //            string answer = BusinessLogic.Settings.NoAnswer;
+        //            if (player.Role == GamerRole.Gamer)
+        //            {
+        //                consoleOut.ShowSomeOutput(TextCuts.NowYouHave + player.Points);
+        //                consoleOut.ShowSomeOutput(TextCuts.DoYouWantCard);
+        //                answer = consoleInp.InputString();
+        //            }
+        //            makeGame.DoRoundForGamer(player, gameDeskModel.cardDeck, answer);
+        //        }
+        //    }
+        //    var gameProcessResult = new GameProcess
+        //    {
+        //        afterGameArray = gameDeskModel.gamerListAfterPrepare
+        //    };
+
+        //    return gameProcessResult;
+        //}
+
+        //private void CheckResult(GameProcess result)
+        //{
+        //    var gameResult = new GameResult();
+        //    var consoleOut = new ConsoleOutput();
+
+        //    var consoleInp = new ConsoleInput();
+        //    //var createDirectory = new DirectoryAndFileOfHistory();
+        //    var displayGameResult = new DisplayGameResults(consoleOut);
+
+        //    gameResult.GetFinishResult(result.afterGameArray);
+
+        //    //string fullName = createDirectory.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
+        //    //string fullFileName = createDirectory.CreateFile(Settings.HistoryFileName, fullName);
+        //    //HelperTextFileHistory textFile = new HelperTextFileHistory();
+        //    //textFile.WriteHistoryStringToFile(fullFileName, GameHistoryList.History);
+
+        //    displayGameResult.FinishResult(result.afterGameArray);
+
+        //    //input.InputString();
+        //}
     }
 }

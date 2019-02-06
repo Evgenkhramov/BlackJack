@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ViewLayer.Constants;
 
-namespace BusinessLogic
+namespace ViewLayer
 {
     public class NumberValidation
     {
