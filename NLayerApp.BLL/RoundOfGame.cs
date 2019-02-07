@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
+using BusinessLogic;
 using DataAccesLayer.Models;
 using BusinessLogic.Dictionary;
 using DataAccesLayer.Enums;
@@ -10,12 +11,13 @@ namespace BusinessLogic
 {
     public class RoundOfGame
     {
+        
         public void DoRoundForGamer(Gamer someGamer, List<OneCard> newSomeDeck, string gamerAnswer)
         {
-            var oneRound = new DistributionOfPlayingCards();
+            
             if (someGamer.Role == GamerRole.Dealer && someGamer.Points < Settings.MinimumCasinoPointsLevel)
             {
-                oneRound.DoRound(someGamer, newSomeDeck);
+                Gam GiveACard(someGamer, newSomeDeck);
                 DoGamerStatus(someGamer);
             }
             if (someGamer.Role == GamerRole.Dealer && someGamer.Points >= Settings.MinimumCasinoPointsLevel)
