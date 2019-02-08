@@ -18,6 +18,7 @@ namespace BusinessLogic.Mappers
             {
                 Name = gamer.Name,
                 Rate = gamer.Rate,
+                Points = gamer.Points,
                 Status = (GamerViewStatus)((int)gamer.Status),
 
                 PlayersCardView = gamer.PlayersCard.Select(card => new CardView { CardNumber = card.CardNumber, CardSuit = card.CardSuit }).ToList(),

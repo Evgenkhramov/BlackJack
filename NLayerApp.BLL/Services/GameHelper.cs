@@ -20,34 +20,42 @@ namespace BusinessLogic.Services
 
         public GamerView PrepareGame(GameInfoModel gameInfo)
         {
-            List<Gamer> gamersList = new List<Gamer>();
 
-            StaticGamerList.StaticGamersList = GenerateBotList(gamersList, gameInfo.HowManyBots, Settings.BotName);
-
+            StaticGamerList.StaticGamersList = GenerateBotList(StaticGamerList.StaticGamersList, gameInfo.HowManyBots, Settings.BotName);
             StaticGamerList.StaticGamersList = AddPlayer(StaticGamerList.StaticGamersList, gameInfo.UserName, gameInfo.UserRate, GamerRole.Gamer, GamerStatus.Plays);
             StaticGamerList.StaticGamersList = AddPlayer(StaticGamerList.StaticGamersList, Settings.DealerName, Settings.DealerRate, GamerRole.Dealer, GamerStatus.Plays);
+            StaticCardList.StaticCardsList = PrepareCardDeck.DoOneDeck();
 
-            var cardDeck = PrepareCardDeck.DoOneDeck();
+            StaticGamerList.StaticGamersList = DoFirstRound(StaticGamerList.StaticGamersList, StaticCardList.StaticCardsList, Settings.HowManyCardsInFirstRound);
 
-            StaticGamerList.StaticGamersList = DoFirstRound(StaticGamerList.StaticGamersList, cardDeck, Settings.HowManyCardsInFirstRound);
-            
             List<GamerView> outputGamerViewList = GetGamerViewList(StaticGamerList.StaticGamersList);
-                         
+
             GamerView Gamer = GamerFromViewList(outputGamerViewList);
 
             return Gamer;
         }
+
         public GamerView GiveCardToTheRealPlayer()
         {
-
-
-            return gamer;
+            Gamer gamer = new Gamer();
+            foreach (Gamer player in StaticGamerList.StaticGamersList)
+            {
+                if (player.Role == GamerRole.Gamer)
+                {
+                    gamer = player;
+                }
+            }
+            Mapper mapper = new Mapper();
+            DoRoundForGamer(gamer, StaticCardList.StaticCardsList);
+            GamerView gamerView = mapper.Mapping(gamer);
+            return gamerView;
         }
- 
+
         public List<Gamer> GenerateBotList(List<Gamer> allGamers, int howManyBots, string botName)
         {
             for (int i = 0; i < howManyBots; i++)
             {
+
                 allGamers.Add(new Gamer() { Name = botName + i, Rate = Settings.BotRate, Status = GamerStatus.Plays, Role = GamerRole.Bot });
             }
 
@@ -59,7 +67,6 @@ namespace BusinessLogic.Services
             allGamers.Add(new Gamer() { Name = name, Rate = rate, Status = status, Role = role });
             return allGamers;
         }
-
 
         public List<GamerView> GetGamerViewList(List<Gamer> gamerList)
         {
@@ -99,15 +106,22 @@ namespace BusinessLogic.Services
             {
                 foreach (Gamer gamer in gamerList)
                 {
-                    GiveACard(gamer, cardDeck);
+                    GiveACard(gamer, StaticCardList.StaticCardsList);
                 }
             }
             return gamerList;
         }
+        public List<GamerView> DoRoundForAllGamer()
+        {
+            foreach (Gamer player in StaticGamerList.StaticGamersList)
+            {
+                DoRoundForGamer(player, StaticCardList.StaticCardsList);
+            }
+            List<GamerView> gamerView = GetGamerViewList(StaticGamerList.StaticGamersList);
+            return gamerView;
+        }
 
-      
-
-        public void DoRoundForGamer(Gamer someGamer, List<OneCard> newSomeDeck, string gamerAnswer)
+        public void DoRoundForGamer(Gamer someGamer, List<OneCard> newSomeDeck)
         {
 
             if (someGamer.Role == GamerRole.Dealer && someGamer.Points < Settings.MinimumCasinoPointsLevel)
@@ -122,15 +136,10 @@ namespace BusinessLogic.Services
 
             if (someGamer.Role == GamerRole.Gamer && someGamer.Status != GamerStatus.Enough)
             {
-                if (gamerAnswer == Settings.YesAnswer)
-                {
-                    GiveACard(someGamer, newSomeDeck);
-                    DoGamerStatus(someGamer);
-                }
-                if (gamerAnswer != Settings.YesAnswer)
-                {
-                    someGamer.Status = GamerStatus.Enough;
-                }
+
+                GiveACard(someGamer, newSomeDeck);
+                DoGamerStatus(someGamer);
+
             }
             if (someGamer.Role == GamerRole.Bot && someGamer.Status != GamerStatus.Enough)
             {
@@ -141,7 +150,7 @@ namespace BusinessLogic.Services
                 }
                 if (GetRandom(2) == 1 && someGamer.Points > 15)
                 {
-                    (someGamer, newSomeDeck);
+                    GiveACard(someGamer, newSomeDeck);
                     DoGamerStatus(someGamer);
                 }
                 if (GetRandom(2) == 0 && someGamer.Points > 15)
@@ -223,4 +232,4 @@ namespace BusinessLogic.Services
     //    //input.InputString();
     //}
 }
-}
+

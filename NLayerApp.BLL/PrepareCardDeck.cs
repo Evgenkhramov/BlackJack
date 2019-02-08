@@ -23,7 +23,6 @@ namespace BusinessLogic
                     });
                 }
             }
-
             return cards;
         }
 

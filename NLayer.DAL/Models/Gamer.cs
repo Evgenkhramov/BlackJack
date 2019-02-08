@@ -25,7 +25,7 @@ namespace DataAccesLayer.Models
             Status = GamerStatus.None;
             WinCash = 0;
             Role = GamerRole.None;
-            List<OneCard> PlayersCard = new List<OneCard>();
+            PlayersCard = new List<OneCard>();
         }
     }
 }

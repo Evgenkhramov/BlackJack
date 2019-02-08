@@ -10,6 +10,7 @@ namespace ViewLayer
     class Program
     {
         static void Main(string[] args)
+
         {
             Game someGame = new Game();
         }

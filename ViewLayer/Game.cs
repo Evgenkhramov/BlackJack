@@ -17,13 +17,17 @@ namespace ViewLayer
         ConsoleOutput Output = new ConsoleOutput();
         ConsoleInput Input = new ConsoleInput();
         readonly Settings GameSettings = new Settings();
-
+        public Game()
+        {
+            DoGame();
+        }
 
         public void DoGame()
         {
             Output.ShowSomeOutput(TextCuts.StartGame);
             Output.ShowSomeOutput(TextCuts.EnterName);
             string UserName = Input.InputString();
+
 
             Output.ShowSomeOutput(TextCuts.HowManyBots, Settings.MaxBots);
             int HowManyBots = Input.InputInt(Settings.MinBots, Settings.MaxBots);
@@ -43,28 +47,29 @@ namespace ViewLayer
             };
             
             GamerView  Gamer =  OneGame.PrepareGame(GameInfo);
-            
-                                  
+            Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
+           
             bool Answer = true;
             string GamerAnswer;
             while(Answer)
             {
-                Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
                 Output.ShowSomeOutput(TextCuts.DoYouWantCard);
                 GamerAnswer = Input.InputString();
                 if (GamerAnswer == Settings.YesAnswer && Gamer.Status!= GamerViewStatus.Enough)
                 {
-                    
+                    Gamer = OneGame.GiveCardToTheRealPlayer();
+                    Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
 
                 }
-                if (GamerAnswer != Settings.YesAnswer && Gamer.Status == GamerViewStatus.Enough)
+                if (GamerAnswer != Settings.YesAnswer || Gamer.Status == GamerViewStatus.Enough || Gamer.Status == GamerViewStatus.Many)
                 {
                     Answer = false;
                 }
 
             }
-            
-            //OneGame.DoGame(PreparedGame);      
+            List<GamerView> FinalResult =  OneGame.DoRoundForAllGamer();
+            Output.ShowFinishResult(FinalResult);
+   
         }
     }
 }
