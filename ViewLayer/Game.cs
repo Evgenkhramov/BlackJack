@@ -61,15 +61,15 @@ namespace ViewLayer
                     Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
 
                 }
-                if (GamerAnswer != Settings.YesAnswer || Gamer.Status == GamerViewStatus.Enough || Gamer.Status == GamerViewStatus.Many)
+                if (GamerAnswer != Settings.YesAnswer || Gamer.Status == GamerViewStatus.Many)
                 {
                     Answer = false;
+                    OneGame.GamerSayEnaugh();
                 }
 
             }
-            List<GamerView> FinalResult =  OneGame.DoRoundForAllGamer();
+            List<GamerView> FinalResult =  OneGame.DoRoundForAllGamerWithResult();
             Output.ShowFinishResult(FinalResult);
-   
         }
     }
 }

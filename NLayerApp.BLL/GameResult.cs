@@ -45,6 +45,7 @@ namespace BusinessLogic
                     }
                 }
             }
+           
             return SomeGamersList;
         }
     }

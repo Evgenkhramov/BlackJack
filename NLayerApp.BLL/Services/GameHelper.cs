@@ -50,6 +50,17 @@ namespace BusinessLogic.Services
             GamerView gamerView = mapper.Mapping(gamer);
             return gamerView;
         }
+        public void GamerSayEnaugh()
+        {
+            foreach (Gamer player in StaticGamerList.StaticGamersList)
+            {
+                if (player.Role == GamerRole.Gamer)
+                {
+                    player.Status = GamerStatus.Enough;
+                }
+            }
+
+        }
 
         public List<Gamer> GenerateBotList(List<Gamer> allGamers, int howManyBots, string botName)
         {
@@ -111,12 +122,15 @@ namespace BusinessLogic.Services
             }
             return gamerList;
         }
-        public List<GamerView> DoRoundForAllGamer()
+        public List<GamerView> DoRoundForAllGamerWithResult()
         {
+            var gameResult = new GameResult();
             foreach (Gamer player in StaticGamerList.StaticGamersList)
             {
                 DoRoundForGamer(player, StaticCardList.StaticCardsList);
             }
+            StaticGamerList.StaticGamersList = gameResult.GetFinishResult(StaticGamerList.StaticGamersList);
+
             List<GamerView> gamerView = GetGamerViewList(StaticGamerList.StaticGamersList);
             return gamerView;
         }
@@ -184,52 +198,5 @@ namespace BusinessLogic.Services
             return randomNumber;
         }
     }
-
-    //public GameProcess DoGame(GameDeskModel gameDeskModel)
-    //{
-
-
-    //    foreach (Gamer player in gameDeskModel.gamerListAfterPrepare)
-    //    {
-    //        while (player.Status == GamerStatus.Plays)
-    //        {
-    //            string answer = BusinessLogic.Settings.NoAnswer;
-    //            if (player.Role == GamerRole.Gamer)
-    //            {
-    //                consoleOut.ShowSomeOutput(TextCuts.NowYouHave + player.Points);
-    //                consoleOut.ShowSomeOutput(TextCuts.DoYouWantCard);
-    //                answer = consoleInp.InputString();
-    //            }
-    //            makeGame.DoRoundForGamer(player, gameDeskModel.cardDeck, answer);
-    //        }
-    //    }
-    //    var gameProcessResult = new GameProcess
-    //    {
-    //        afterGameArray = gameDeskModel.gamerListAfterPrepare
-    //    };
-
-    //    return gameProcessResult;
-    //}
-
-    //private void CheckResult(GameProcess result)
-    //{
-    //    var gameResult = new GameResult();
-    //    var consoleOut = new ConsoleOutput();
-
-    //    var consoleInp = new ConsoleInput();
-    //    //var createDirectory = new DirectoryAndFileOfHistory();
-    //    var displayGameResult = new DisplayGameResults(consoleOut);
-
-    //    gameResult.GetFinishResult(result.afterGameArray);
-
-    //    //string fullName = createDirectory.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
-    //    //string fullFileName = createDirectory.CreateFile(Settings.HistoryFileName, fullName);
-    //    //HelperTextFileHistory textFile = new HelperTextFileHistory();
-    //    //textFile.WriteHistoryStringToFile(fullFileName, GameHistoryList.History);
-
-    //    displayGameResult.FinishResult(result.afterGameArray);
-
-    //    //input.InputString();
-    //}
 }
 

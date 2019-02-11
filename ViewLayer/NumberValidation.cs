@@ -7,9 +7,8 @@ namespace ViewLayer
 {
     public class NumberValidation
     {
-        
-
         private ConsoleOutput output = new ConsoleOutput();
+        private ConsoleInput input = new ConsoleInput();
         public int CheckNumber(int min, int max, string enterValidNumber, string notValidNumber)
         {
             int number = 0;
@@ -19,7 +18,7 @@ namespace ViewLayer
             {
                 try
                 {
-                    string someText = Console.ReadLine();
+                    string someText = input.InputString();
                     bool success = Int32.TryParse(someText, out number);
                     if (success && number >= min && number <= max)
                     {
@@ -33,7 +32,7 @@ namespace ViewLayer
                 }
                 catch
                 {
-                    Console.WriteLine(notValidNumber);
+                    output.ShowSomeOutput(notValidNumber);
                 }
             }
             return validNumber;

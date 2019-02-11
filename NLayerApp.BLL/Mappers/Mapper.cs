@@ -19,10 +19,12 @@ namespace BusinessLogic.Mappers
                 Name = gamer.Name,
                 Rate = gamer.Rate,
                 Points = gamer.Points,
+                WinCash = gamer.WinCash ,
                 Status = (GamerViewStatus)((int)gamer.Status),
 
                 PlayersCardView = gamer.PlayersCard.Select(card => new CardView { CardNumber = card.CardNumber, CardSuit = card.CardSuit }).ToList(),
                 Role = (GamerViewRole)((int)gamer.Role)
+                
             };
             return MappingGamer;
         }
