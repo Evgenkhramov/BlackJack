@@ -14,7 +14,7 @@ namespace BusinessLogic.Mappers
     {
         public GamerView Mapping(Gamer gamer)
         {
-            var MappingGamer = new GamerView()
+            var mappingGamer = new GamerView()
             {
                 Name = gamer.Name,
                 Rate = gamer.Rate,
@@ -26,7 +26,7 @@ namespace BusinessLogic.Mappers
                 Role = (GamerViewRole)((int)gamer.Role)
                 
             };
-            return MappingGamer;
+            return mappingGamer;
         }
     }
 }

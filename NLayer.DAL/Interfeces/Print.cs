@@ -5,7 +5,7 @@ using DataAccesLayer.Models;
 
 namespace DataAccesLayer.Interfeces
 {
-    public interface Print
+    public interface IPrint
     {
         void PrintHistory(List<CardHistory> history);
     }

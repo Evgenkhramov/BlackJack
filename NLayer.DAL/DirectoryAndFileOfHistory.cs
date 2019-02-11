@@ -31,7 +31,6 @@ namespace DataAccesLayer
             {
                 File.Delete(fullFileName);
             }
-
             return fullFileName;
         }
     }

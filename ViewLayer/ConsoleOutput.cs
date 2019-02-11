@@ -19,8 +19,17 @@ namespace ViewLayer
         {
             foreach (GamerView player in gamerlist)
             {
+                ShowAllGamerCards(player);
                 Console.WriteLine(TextCuts.ShowFinishResultByConsole,
-                   player.Name, player.Points, player.Status, player.WinCash);
+                   player.Name, player.Points, player.Status, player.WinCash);              
+            }
+        }
+
+        public void ShowAllGamerCards(GamerView player)
+        {
+            foreach (CardView card in player.PlayersCardView)
+            {
+                Console.WriteLine(card.CardSuit + " " + card.CardNumber);
             }
         }
 

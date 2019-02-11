@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 using BusinessLogic.Models;
-using DataAccesLayer;
 using DataAccesLayer.Models;
+using DataAccesLayer;
 using DataAccesLayer.Enums;
 using ViewModels.Enums;
 using ViewModels;
 using BusinessLogic.Mappers;
 using BusinessLogic.Dictionary;
 
-
-
-
 namespace BusinessLogic.Services
 {
     public class GameHelper
     {
-
         public GamerView PrepareGame(GameInfoModel gameInfo)
         {
-
             StaticGamerList.StaticGamersList = GenerateBotList(StaticGamerList.StaticGamersList, gameInfo.HowManyBots, Settings.BotName);
             StaticGamerList.StaticGamersList = AddPlayer(StaticGamerList.StaticGamersList, gameInfo.UserName, gameInfo.UserRate, GamerRole.Gamer, GamerStatus.Plays);
             StaticGamerList.StaticGamersList = AddPlayer(StaticGamerList.StaticGamersList, Settings.DealerName, Settings.DealerRate, GamerRole.Dealer, GamerStatus.Plays);
@@ -45,28 +40,16 @@ namespace BusinessLogic.Services
                     gamer = player;
                 }
             }
-            Mapper mapper = new Mapper();
+            var mapper = new Mapper();
             DoRoundForGamer(gamer, StaticCardList.StaticCardsList);
             GamerView gamerView = mapper.Mapping(gamer);
             return gamerView;
-        }
-        public void GamerSayEnaugh()
-        {
-            foreach (Gamer player in StaticGamerList.StaticGamersList)
-            {
-                if (player.Role == GamerRole.Gamer)
-                {
-                    player.Status = GamerStatus.Enough;
-                }
-            }
-
         }
 
         public List<Gamer> GenerateBotList(List<Gamer> allGamers, int howManyBots, string botName)
         {
             for (int i = 0; i < howManyBots; i++)
             {
-
                 allGamers.Add(new Gamer() { Name = botName + i, Rate = Settings.BotRate, Status = GamerStatus.Plays, Role = GamerRole.Bot });
             }
 
@@ -81,12 +64,13 @@ namespace BusinessLogic.Services
 
         public List<GamerView> GetGamerViewList(List<Gamer> gamerList)
         {
-            Mapper mapper = new Mapper();
+            var mapper = new Mapper();
             List<GamerView> outputGamerList = new List<GamerView>();
             foreach (Gamer player in gamerList)
             {
                 outputGamerList.Add(mapper.Mapping(player));
             }
+
             return outputGamerList;
         }
 
@@ -100,14 +84,27 @@ namespace BusinessLogic.Services
                     gamer = player;
                 }
             }
+
             return gamer;
+        }
+
+        public void GamerSayEnaugh()
+        {
+            foreach (Gamer player in StaticGamerList.StaticGamersList)
+            {
+                if (player.Role == GamerRole.Gamer)
+                {
+                    player.Status = GamerStatus.Enough;
+                }
+            }
         }
 
         public void GiveACard(Gamer gamer, List<OneCard> cardDeck)
         {
-            OneCard SomeCard = PrepareCardDeck.GetSomeCard(cardDeck);
-            gamer.PlayersCard.Add(SomeCard);
-            int cardPoints = DictionaryOfCardPoints.CardPointDict[SomeCard.CardNumber];
+            OneCard someCard = PrepareCardDeck.GetSomeCard(cardDeck);
+            gamer.PlayersCard.Add(someCard);
+            HistoryHelper.AddGameHistory(StaticCardHistoryList.History, gamer, someCard);
+            int cardPoints = DictionaryOfCardPoints.CardPointDict[someCard.CardNumber];
             gamer.Points += cardPoints;
         }
 
@@ -196,6 +193,14 @@ namespace BusinessLogic.Services
             int randomNumber = random.Next(maxNumber);
 
             return randomNumber;
+        }
+
+        public void WriteHistoryInFile()
+        {
+            var historyFile = new DirectoryAndFileOfHistory();
+            var fullDirectoryName = historyFile.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
+            var fullFileName = historyFile.CreateFile(Settings.HistoryFileName, fullDirectoryName);
+            HistoryHelper.WriteHistoryStringToFile(fullFileName, StaticCardHistoryList.History);
         }
     }
 }

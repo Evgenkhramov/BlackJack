@@ -47,7 +47,10 @@ namespace ViewLayer
             };
             
             GamerView  Gamer =  OneGame.PrepareGame(GameInfo);
+            Output.ShowAllGamerCards(Gamer);
             Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
+
+
            
             bool Answer = true;
             string GamerAnswer;
@@ -58,6 +61,7 @@ namespace ViewLayer
                 if (GamerAnswer == Settings.YesAnswer && Gamer.Status!= GamerViewStatus.Enough)
                 {
                     Gamer = OneGame.GiveCardToTheRealPlayer();
+                    Output.ShowAllGamerCards(Gamer);
                     Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
 
                 }
@@ -68,8 +72,10 @@ namespace ViewLayer
                 }
 
             }
-            List<GamerView> FinalResult =  OneGame.DoRoundForAllGamerWithResult();
+          
+            List<GamerView> FinalResult = OneGame.DoRoundForAllGamerWithResult();
             Output.ShowFinishResult(FinalResult);
+            OneGame.WriteHistoryInFile();
         }
     }
 }
