@@ -26,6 +26,10 @@ namespace ViewLayer
         {
             Output.ShowSomeOutput(TextCuts.StartGame);
             Output.ShowSomeOutput(TextCuts.EnterName);
+
+            GameService gameService = new GameService();
+            RoundService roundService  = new RoundService();
+
             string UserName = Input.InputString();
 
 
@@ -38,7 +42,7 @@ namespace ViewLayer
 
             Output.ShowSomeOutput(TextCuts.ShowStartRaund);
 
-            GameHelper OneGame = new GameHelper();
+           
             var GameInfo = new GameInfoModel
             {
                 UserName = UserName,
@@ -46,36 +50,34 @@ namespace ViewLayer
                 HowManyBots = HowManyBots
             };
             
-            GamerView  Gamer =  OneGame.PrepareGame(GameInfo);
+            GamerView  Gamer =  gameService.PrepareGame(GameInfo);
             Output.ShowAllGamerCards(Gamer);
             Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
-
-
            
-            bool Answer = true;
+            bool isAnswer = true;
             string GamerAnswer;
-            while(Answer)
+            while(isAnswer)
             {
                 Output.ShowSomeOutput(TextCuts.DoYouWantCard);
                 GamerAnswer = Input.InputString();
                 if (GamerAnswer == Settings.YesAnswer && Gamer.Status!= GamerViewStatus.Enough)
                 {
-                    Gamer = OneGame.GiveCardToTheRealPlayer();
+                    Gamer = roundService.GiveCardToTheRealPlayer();
                     Output.ShowAllGamerCards(Gamer);
                     Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
 
                 }
                 if (GamerAnswer != Settings.YesAnswer || Gamer.Status == GamerViewStatus.Many)
                 {
-                    Answer = false;
-                    OneGame.GamerSayEnaugh();
+                    isAnswer = false;
+                    gameService.GamerSayEnaugh();
                 }
 
             }
           
-            List<GamerView> FinalResult = OneGame.DoRoundForAllGamerWithResult();
+            List<GamerView> FinalResult = roundService.DoRoundForAllGamerWithResult();
             Output.ShowFinishResult(FinalResult);
-            OneGame.WriteHistoryInFile();
+            gameService.WriteHistoryInFile();
         }
     }
 }

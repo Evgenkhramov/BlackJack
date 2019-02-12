@@ -10,22 +10,22 @@ namespace ViewLayer
         private ConsoleOutput output = new ConsoleOutput();
         private ConsoleInput input = new ConsoleInput();
         public int CheckNumber(int min, int max, string enterValidNumber, string notValidNumber)
-        {
-            int number = 0;
+        {          
             int validNumber = 0;
-            bool valid = true;
-            while (valid)
+            bool isValid = false;
+            while (!isValid)
             {
                 try
                 {
+                    int number = 0;
                     string someText = input.InputString();
-                    bool success = Int32.TryParse(someText, out number);
-                    if (success && number >= min && number <= max)
+                    bool isNumberSuccess = int.TryParse(someText, out number);
+                    if (isNumberSuccess && number >= min && number <= max)
                     {
                         validNumber = number;
-                        valid = false;
+                        isValid = true;
                     }
-                    if (!success || number < min || number > max)
+                    if (!isNumberSuccess || number < min || number > max)
                     {
                         output.ShowSomeOutput(enterValidNumber, min, max);
                     }

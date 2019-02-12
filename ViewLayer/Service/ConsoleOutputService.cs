@@ -29,7 +29,7 @@ namespace ViewLayer
         {
             foreach (CardView card in player.PlayersCardView)
             {
-                Console.WriteLine(card.CardSuit + " " + card.CardNumber);
+                Console.WriteLine($"{card.CardSuit} {card.CardNumber}");
             }
         }
 

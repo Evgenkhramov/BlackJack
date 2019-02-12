@@ -19,6 +19,8 @@ namespace BusinessLogic
         public static int MaxBots { get; private set; }
         public static int MinBots { get; private set; }
         public static int HowManyCardsInFirstRound { get; private set; }
+        public static int HowManyWinRate { get; private set; }
+        public static int MinBotPoints { get; private set; }
 
         public static string YesAnswer { get; private set; }
         public static string NoAnswer { get; private set; }
@@ -42,10 +44,12 @@ namespace BusinessLogic
             HowManyCardsInFirstRound = 2;
             YesAnswer = "y";
             NoAnswer = "n";
+            MinBotPoints = 15;
 
             HistoryDirectoryPath = @"C:\BlackJeck";
             HistoryDirectorySubPath = @"history";
             HistoryFileName = "HistoryText.txt";
+            HowManyWinRate = 3/2;
 
         }
     }

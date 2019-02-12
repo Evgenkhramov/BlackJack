@@ -6,8 +6,6 @@ using DataAccesLayer.Models;
 using ViewModels;
 using ViewModels.Enums;
 
-
-
 namespace BusinessLogic.Mappers
 {
     public class Mapper
@@ -23,8 +21,7 @@ namespace BusinessLogic.Mappers
                 Status = (GamerViewStatus)((int)gamer.Status),
 
                 PlayersCardView = gamer.PlayersCard.Select(card => new CardView { CardNumber = card.CardNumber, CardSuit = card.CardSuit }).ToList(),
-                Role = (GamerViewRole)((int)gamer.Role)
-                
+                Role = (GamerViewRole)((int)gamer.Role)               
             };
             return mappingGamer;
         }

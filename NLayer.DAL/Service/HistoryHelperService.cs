@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using DataAccesLayer.Models;
+using DataAccesLayer.Interfeces;
 
-namespace DataAccesLayer
+namespace DataAccesLayer.Service
 {
-    public class HistoryHelper
+    public class HistoryHelper : IWrite
     {
-        public static void AddGameHistory(List<CardHistory> historyList, Gamer gamer, OneCard oneCard)
+        public  void AddGameHistory(List<CardHistory> historyList, Gamer gamer, OneCard oneCard)
         {
             var newRecord = new CardHistory(gamer.Name, gamer.Points, oneCard);
             historyList.Add(newRecord);
         }
 
-        public static void  WriteHistoryStringToFile(string fullFileName, List<CardHistory> historyList)
+        public  void  WriteHistoryListToFile(string fullFileName, List<CardHistory> historyList)
         {
             try
             { 

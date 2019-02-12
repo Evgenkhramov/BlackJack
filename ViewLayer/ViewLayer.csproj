@@ -49,14 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleInput.cs" />
-    <Compile Include="ConsoleOutput.cs" />
-    <Compile Include="DisplayGameResults.cs" />
+    <Compile Include="Service\ConsoleInputService.cs" />
+    <Compile Include="Service\ConsoleOutputService.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Interfaces\Input.cs" />
-    <Compile Include="Interfaces\Output.cs" />
-    <Compile Include="GameDeskOut.cs" />
-    <Compile Include="NumberValidation.cs" />
+    <Compile Include="Interfaces\IInput.cs" />
+    <Compile Include="Interfaces\IOutput.cs" />
+    <Compile Include="Service\NumberValidationService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextCuts\TextCuts.cs" />

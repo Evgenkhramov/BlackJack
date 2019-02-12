@@ -7,7 +7,7 @@ using BusinessLogic.Dictionary;
 
 namespace BusinessLogic
 {
-    public class PrepareCardDeck
+    public class CardDeckService
     {
         public static List<OneCard> DoOneDeck()
         {

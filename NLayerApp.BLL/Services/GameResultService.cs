@@ -7,7 +7,7 @@ using DataAccesLayer.Enums;
 
 namespace BusinessLogic
 {
-    public class GameResult
+    public class GameResultService
     {
         public List<Gamer> GetFinishResult(List<Gamer> SomeGamersList)
         {
@@ -28,7 +28,7 @@ namespace BusinessLogic
                             (player.Status == GamerStatus.Enough && player.Points < dealer.Points && dealer.Status == GamerStatus.Many))
                     {
                         player.Status = GamerStatus.Win;
-                        player.WinCash = 3 / 2 * player.Rate;
+                        player.WinCash = Settings.HowManyWinRate * player.Rate;
                     }
                     if (player.Status == GamerStatus.Blackjack && dealer.Status == GamerStatus.Blackjack)
                     {

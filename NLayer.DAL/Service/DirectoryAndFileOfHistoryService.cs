@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using DataAccesLayer.Interfeces;
 
 
-namespace DataAccesLayer
+namespace DataAccesLayer.Service
 {
-    public class DirectoryAndFileOfHistory
+    public class DirectoryAndFileOfHistoryService : IHistoryFileService
     {
         public string CreateDirectory(string path, string subpath)
         {
@@ -16,7 +17,7 @@ namespace DataAccesLayer
                 dirInfo.Create();
             }
 
-            string fullName = path + @"\" + subpath;
+            string fullName = $@"{path}\{subpath}";
             DirectoryInfo nextDirInfo = new DirectoryInfo(fullName);
             if (!nextDirInfo.Exists)
             {
@@ -26,7 +27,7 @@ namespace DataAccesLayer
         }
         public string CreateFile(string filename, string directoryFullName)
         {
-            string fullFileName = directoryFullName + @"\" + filename;
+            string fullFileName = $@"{directoryFullName}\{filename}";
             if (File.Exists(fullFileName))
             {
                 File.Delete(fullFileName);
