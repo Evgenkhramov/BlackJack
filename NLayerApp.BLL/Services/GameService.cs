@@ -51,7 +51,8 @@ namespace BusinessLogic.Services
 
         public List<GamerView> GetGamerViewList(List<Gamer> gamerList)
         {
-            var mapper = new Mapper();
+            var mapper = new Mappered();
+                   
             List<GamerView> outputGamerList = new List<GamerView>();
             foreach (Gamer player in gamerList)
             {

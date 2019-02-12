@@ -32,7 +32,7 @@ namespace BusinessLogic.Services
                     gamer = player;
                 }
             }
-            var mapper = new Mapper();
+            var mapper = new Mappered();
             DoRoundForGamer(gamer, StaticCardList.StaticCardsList);
             GamerView gamerView = mapper.Mapping(gamer);
             return gamerView;
