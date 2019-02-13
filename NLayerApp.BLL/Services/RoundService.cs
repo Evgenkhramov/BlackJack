@@ -16,8 +16,8 @@ namespace BusinessLogic.Services
         {
             OneCard someCard = CardDeckService.GetSomeCard(cardDeck);
             gamer.PlayersCard.Add(someCard);
-            var HistoryService = new HistoryHelper();
-            HistoryService.AddGameHistory(StaticCardHistoryList.History, gamer, someCard);
+            var historyHelperService = new HistoryHelperService();
+            historyHelperService.AddGameHistory(StaticCardHistoryList.History, gamer, someCard);
             int cardPoints = DictionaryOfCardPoints.CardPointDict[someCard.CardNumber];
             gamer.Points += cardPoints;
         }
@@ -34,7 +34,7 @@ namespace BusinessLogic.Services
             }
             var mapper = new Mappered();
             DoRoundForGamer(gamer, StaticCardList.StaticCardsList);
-            GamerView gamerView = mapper.Mapping(gamer);
+            GamerView gamerView = mapper.MappingByAutoMapper(gamer);
             return gamerView;
         }
 

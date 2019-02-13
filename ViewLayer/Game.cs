@@ -30,44 +30,41 @@ namespace ViewLayer
             GameService gameService = new GameService();
             RoundService roundService  = new RoundService();
 
-            string UserName = Input.InputString();
-
+            string userName = Input.InputString();
 
             Output.ShowSomeOutput(TextCuts.HowManyBots, Settings.MaxBots);
-            int HowManyBots = Input.InputInt(Settings.MinBots, Settings.MaxBots);
+            int howManyBots = Input.InputInt(Settings.MinBots, Settings.MaxBots);
 
             Output.ShowSomeOutput(TextCuts.EnterValidRate, Settings.MinRateForGamer, Settings.MaxRateForGamer);
-
-            int Rate = Input.InputInt(Settings.MinRateForGamer, Settings.MaxRateForGamer);
+            int rate = Input.InputInt(Settings.MinRateForGamer, Settings.MaxRateForGamer);
 
             Output.ShowSomeOutput(TextCuts.ShowStartRaund);
-
            
             var GameInfo = new GameInfoModel
             {
-                UserName = UserName,
-                UserRate = Rate,
-                HowManyBots = HowManyBots
+                UserName = userName,
+                UserRate = rate,
+                HowManyBots = howManyBots
             };
             
-            GamerView  Gamer =  gameService.PrepareGame(GameInfo);
-            Output.ShowAllGamerCards(Gamer);
-            Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
+            GamerView  gamer =  gameService.PrepareGame(GameInfo);
+            Output.ShowAllGamerCards(gamer);
+            Output.ShowSomeOutput(TextCuts.NowYouHave + gamer.Points);
            
             bool isAnswer = true;
-            string GamerAnswer;
+            string gamerAnswer;
             while(isAnswer)
             {
                 Output.ShowSomeOutput(TextCuts.DoYouWantCard);
-                GamerAnswer = Input.InputString();
-                if (GamerAnswer == Settings.YesAnswer && Gamer.Status!= GamerViewStatus.Enough)
+                gamerAnswer = Input.InputString();
+                if (gamerAnswer == Settings.YesAnswer && gamer.Status!= GamerViewStatus.Enough)
                 {
-                    Gamer = roundService.GiveCardToTheRealPlayer();
-                    Output.ShowAllGamerCards(Gamer);
-                    Output.ShowSomeOutput(TextCuts.NowYouHave + Gamer.Points);
+                    gamer = roundService.GiveCardToTheRealPlayer();
+                    Output.ShowAllGamerCards(gamer);
+                    Output.ShowSomeOutput(TextCuts.NowYouHave + gamer.Points);
 
                 }
-                if (GamerAnswer != Settings.YesAnswer || Gamer.Status == GamerViewStatus.Many)
+                if (gamerAnswer != Settings.YesAnswer || gamer.Status == GamerViewStatus.Many)
                 {
                     isAnswer = false;
                     gameService.GamerSayEnaugh();
@@ -75,9 +72,11 @@ namespace ViewLayer
 
             }
           
-            List<GamerView> FinalResult = roundService.DoRoundForAllGamerWithResult();
-            Output.ShowFinishResult(FinalResult);
+            List<GamerView> finalResult = roundService.DoRoundForAllGamerWithResult();
+            Output.ShowFinishResult(finalResult);
             gameService.WriteHistoryInFile();
+
+            Console.ReadKey();
         }
     }
 }

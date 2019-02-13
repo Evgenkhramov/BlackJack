@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using ViewLayer.Constants;
+using ViewLayer.Interfaces;
 
 namespace ViewLayer
 {
-    public class NumberValidation
+    public class NumberValidation : INumberValidation
     {
         private ConsoleOutput output = new ConsoleOutput();
         private ConsoleInput input = new ConsoleInput();

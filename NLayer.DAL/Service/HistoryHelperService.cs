@@ -6,7 +6,7 @@ using DataAccesLayer.Interfeces;
 
 namespace DataAccesLayer.Service
 {
-    public class HistoryHelper : IWrite
+    public class HistoryHelperService : IWrite
     {
         public  void AddGameHistory(List<CardHistory> historyList, Gamer gamer, OneCard oneCard)
         {

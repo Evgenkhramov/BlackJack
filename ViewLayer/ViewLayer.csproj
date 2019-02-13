@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\INumberValidation.cs" />
     <Compile Include="Service\ConsoleInputService.cs" />
     <Compile Include="Service\ConsoleOutputService.cs" />
     <Compile Include="Game.cs" />

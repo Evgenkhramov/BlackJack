@@ -17,7 +17,6 @@ namespace BusinessLogic.Mappers
             );
 
             return config;
-
         }
     }
 }

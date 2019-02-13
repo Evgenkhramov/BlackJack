@@ -27,9 +27,9 @@ namespace BusinessLogic.Services
 
             List<GamerView> outputGamerViewList = GetGamerViewList(StaticGamerList.StaticGamersList);
 
-            GamerView Gamer = GamerFromViewList(outputGamerViewList);
+            GamerView gamer = GamerFromViewList(outputGamerViewList);
             
-            return Gamer;
+            return gamer;
         }
 
 
@@ -56,7 +56,7 @@ namespace BusinessLogic.Services
             List<GamerView> outputGamerList = new List<GamerView>();
             foreach (Gamer player in gamerList)
             {
-                outputGamerList.Add(mapper.Mapping(player));
+                outputGamerList.Add(mapper.MappingByAutoMapper(player));
             }
 
             return outputGamerList;
@@ -92,8 +92,8 @@ namespace BusinessLogic.Services
             var historyFile = new DirectoryAndFileOfHistoryService();
             var fullDirectoryName = historyFile.CreateDirectory(Settings.HistoryDirectoryPath, Settings.HistoryDirectorySubPath);
             var fullFileName = historyFile.CreateFile(Settings.HistoryFileName, fullDirectoryName);
-            var HistoryService = new HistoryHelper();
-            HistoryService.WriteHistoryListToFile(fullFileName, StaticCardHistoryList.History);
+            var historyService = new HistoryHelperService();
+            historyService.WriteHistoryListToFile(fullFileName, StaticCardHistoryList.History);
         }
     }
 }
